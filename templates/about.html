@@ -2,16 +2,13 @@
 {% block content %}
     <div class ="container"> 
       <h1>About me...</h1>
-      <ul>
+      
+      <img src="{{ url_for( 'static', filename='images/me.jpg') }}" width="400">
+      <br/><br/>
       <p>
-        {% for name in names %}
-          {% if name == "Wes" %}
-            <li>Wes is the Best! </li>
-          {% else %}
-            <li>{{ name }}</li>
-          {% endif %}
-        {% endfor %}
-      </p>
-      </ul>  
+        My name is Ann Smith. I am a senior in high school. Everyone can agree that I am a good student and that I
+        like to study. My favorite subjects are chemistry and biology. I am going to enter the university because my
+        goal is to study these subjects in future and to become a respected professional in one of the fields.
+    </p>
     </div>
 {% endblock %}
