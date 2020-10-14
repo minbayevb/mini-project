@@ -1,28 +1,29 @@
+
 from flask import Flask, render_template, url_for, request
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
 app=Flask(__name__, template_folder= "templates")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite.///friends.db'
+# Initilize the  database
+db= SQLAlchemy(app)
 
+# Create Database Model
+class Friends(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable = False)
+    data = db.Column(db.DateTime, default= datetime.utcnow)
+
+    # Create a function to return string when we add something
+    def __repr__(self):
+        return '<Name %r>' % self.id
 
 subscribers = []
 
 @app.route('/')
 def index():
     title = "Minbayev Bolatbek's Blog"
-    return render_template("index.html", title=title, posts= posts), url_for('index')
+    return render_template("index.html", title=title), url_for('index')
 
 @app.route('/about')
 def about():
@@ -44,8 +45,8 @@ def form():
     if any(conditions) and not all(conditions) :
         error_statement = "All Form Fields Required..."
         return render_template('subscribe.html', error_statement= error_statement,
-        first_name =first_name, last_name=last_name, email=email) 
-    
+        first_name =first_name, last_name=last_name, email=email)
+
     subscribers.append(f"{first_name} {last_name} | {email}")
     title = "Thank you!"
     return render_template("form.html", title=title, subscribers=subscribers)
